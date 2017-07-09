@@ -1,0 +1,207 @@
+---
+title: "CaseStudy1_Rmd"
+author: "Austin Hancock - Ernesto Carrera - Matthew Przybyl"
+date: "7/9/2017"
+output: html_document
+---
+
+
+## R Markdown
+
+The code for downloading, tyding and merging data in a R Markdown file.
+The files are included in a makefile format
+
+
+
+```{r}
+#downloading
+source("Download.R")
+
+#Cleaning
+source("Cleaning.R")
+
+#merging the data into a Data fram object testMerge
+source ("Merging.R")
+
+```
+
+
+
+```{r}
+match<-testMerge[which(!is.na(testMerge$`CountryCode`)),1]
+
+```
+The answers to the questions of interest are:
+
+1) The number of countries that match are: `r length(match)`
+
+```{r}
+## 2 - Sort Ascending GDP DATA
+
+testMerge <- testMerge[order(testMerge$`GDP (millions of US dollars)`, decreasing = FALSE),]
+
+```
+
+
+2) The 13th country with the GDP (ascended order) is: `r testMerge[13,3]`
+
+
+```{r}
+#Retreiving the data for the income group: High income: OECD
+tHiOE<-subset(x=testMerge,`Income Group`=='High income: OECD')
+HiInOecd <- round(mean(tHiOE$`Rank`,na.rm=TRUE),2)
+```
+
+
+3) The average GDP rankings for the "High Income OECD is: `r HiInOecd` 
+
+
+```{r}
+#Retreiving the data for the income group: High income: nonOECD
+tHiNOE<-subset(x=testMerge,`Income Group`=='High income: nonOECD')
+HiInNOecd <- round(mean(tHiNOE$`Rank`,na.rm=TRUE),2)
+
+```
+  The average GDP rankings for the "High Income nonOECD" is: `r HiInNOecd` 
+
+
+4) Plot the GDP for all the countries. 
+```{r results='hide'}
+##Plot the GDP for all of the countries, color plot by Income Group
+suppressWarnings(library(ggplot2))
+ggplot(testMerge, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+  geom_bar(stat='identity') +
+  coord_flip() +
+  theme(axis.text.y = element_text(vjust = 1, size = 4))
+
+#Saving the plot in png format to be displayed in Github
+suppressMessages(suppressWarnings(ggsave("all.png")))
+
+```
+
+![*Fig. 1* GDP by Country](all.png)
+
+```{r}
+
+#We create different dataframe for each income group
+
+HighIncomeNonOECD <- testMerge[which(testMerge$`Income Group` == 'High income: nonOECD'),]
+HighIncomeOECD <- testMerge[which(testMerge$`Income Group` == 'High income: OECD'),]
+LowIncome <- testMerge[which(testMerge$`Income Group` == 'Low income'),]
+LowerMiddleIncome <- testMerge[which(testMerge$`Income Group` == 'Lower middle income'),]
+UpperMiddleIncome <- testMerge[which(testMerge$`Income Group` == 'Upper middle income'),]
+
+
+```
+
+
+
+
+
+4.1) Plot the GDP for countries with HighIncomeNonOECD
+
+```{r}
+ggplot(HighIncomeNonOECD, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+  geom_bar(stat='identity', fill = '#FF6699', color = 'black') +
+  coord_flip() +
+  theme(axis.text.y = element_text(vjust = 1, size = 5))
+
+ggsave("HighIncomeNonOECD.png")
+```
+
+![*Fig. 2* GDP by HighIncomeNonOECD group](HighIncomeNonOECD.png)
+
+4.2) Plot the GDP for countries with HighIncomeOECD
+
+```{r}
+ggplot(HighIncomeOECD, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+  geom_bar(stat='identity', fill = '#CCCC00', color = 'black') +
+  coord_flip() +
+  theme(axis.text.y = element_text(vjust = 1, size = 5))
+
+ggsave("HighIncomeOECD.png")
+```
+
+![*Fig. 3* GDP by HighIncomeOECD group](HighIncomeOECD.png)
+
+4.3) Plot the GDP for countries with LowIncome
+
+```{r}
+
+ggplot(LowIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+  geom_bar(stat='identity', fill = '#009966', color = 'black') +
+  coord_flip() +
+  theme(axis.text.y = element_text(vjust = 1, size = 5))
+
+ggsave("LowIncome.png")
+
+```
+
+![*Fig. 4* GDP by LowIncome group](LowIncome.png)
+
+4.4) Plot the GDP for countries with LowerMiddleIncome
+
+```{r}
+ggplot(LowerMiddleIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+  geom_bar(stat='identity', fill = '#33CCFF', color = 'black') +
+  coord_flip() +
+  theme(axis.text.y = element_text(vjust = 1, size = 5))
+
+
+ggsave("LowerMiddleIncome.png")
+```
+
+
+![*Fig. 5* GDP by LowerMiddleIncome group](LowerMiddleIncome.png)
+
+
+4.5) Plot the GDP for countries with UpperMiddleIncome
+```{r}
+ggplot(UpperMiddleIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+  geom_bar(stat='identity', fill = '#CC66FF', color = 'black') +
+  coord_flip() +
+  theme(axis.text.y = element_text(vjust = 1, size = 5))
+
+
+ggsave("UpperMiddleIncome.png")
+
+```
+
+![*Fig. 6* GDP by UpperMiddleIncome group](UpperMiddleIncome.png)
+
+```{r}
+##5- cut the gdp ranking into 5 SEPARATE QUANTILE GROUPS
+## Counting the Missing Values in `Rank`
+
+
+#counting the number of missing obervations in Rank
+CountMissing_Rank<-length(which(is.na(testMerge$`Rank`)))
+CountMissing_Rank
+
+#We get rid of missing values in the ranking Rank: 
+Ranks_GDP<-testMerge[which(!is.na(testMerge$`Rank`)),]
+
+
+Ranks_GDP <- within(Ranks_GDP
+                   ,quartile <- as.integer(cut(`GDP (millions of US dollars)`, quantile(`GDP (millions of US dollars)`, probs=0:5/5), include.lowest=TRUE)))
+
+
+
+#getting the 38 nations with the highest income
+Ranks_GDP_<-subset(Ranks_GDP[,c("Rank","Economy","GDP (millions of US dollars)","Income Group","quartile")],quartile==5 & `Income Group`=="Lower middle income")
+
+#number of 38 nations with the highest gdp ranking and have "lower middle income is:"
+num38LowMid<- length(Ranks_GDP_[,1])
+#The 38 nations with the highets gdp and "lower middle income are"
+Ranks_GDP_[order(Ranks_GDP_$`GDP (millions of US dollars)`, decreasing = TRUE),]
+
+
+```
+
+
+5) Cutting GDP ranking into 5 separate quantile groups. The number of coutries that are
+lower middle income but among the highest GDP is: `r num38LowMid`
+
+Note: There are `r CountMissing_Rank` countries not ranked.
+
+
