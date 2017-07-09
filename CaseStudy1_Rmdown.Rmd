@@ -1,8 +1,8 @@
 ---
 title: "CaseStudy1_Rmd"
-author: "Austin Hancock - Ernesto Carrera - Matthew Przybyl"
+author: "Austin Hancock - Ernesto Carrera - Matthew Przybyla"
 date: "7/9/2017"
-output: html_document
+output: github_document
 ---
 
 # Introduction
@@ -21,13 +21,13 @@ The files are included in a makefile format
 
 
 ```{r}
-#downloading
+# Downloading
 source("Download.R")
 
-#Cleaning
+# Cleaning
 source("Cleaning.R")
 
-#merging the data into a Data fram object testMerge
+# Merging the data into a Data frame object testMerge
 source ("Merging.R")
 
 ```
@@ -54,37 +54,44 @@ testMerge <- testMerge[order(testMerge$`GDP (millions of US dollars)`, decreasin
 
 
 ```{r}
-#Retreiving the data for the income group: High income: OECD
+# Retrieving the data for the income group: High income: OECD
 tHiOE<-subset(x=testMerge,`Income Group`=='High income: OECD')
 HiInOecd <- round(mean(tHiOE$`Rank`,na.rm=TRUE),2)
 ```
 
 
-3) The average GDP rankings for the "High Income OECD is: `r HiInOecd` 
+3) The average GDP rankings for the "High Income OECD" is: `r HiInOecd` 
 
 
 ```{r}
-#Retreiving the data for the income group: High income: nonOECD
+# Retrieving the data for the income group: High income: nonOECD
 tHiNOE<-subset(x=testMerge,`Income Group`=='High income: nonOECD')
 HiInNOecd <- round(mean(tHiNOE$`Rank`,na.rm=TRUE),2)
 
 ```
   The average GDP rankings for the "High Income nonOECD" is: `r HiInNOecd` 
 
+```{r}
+# Number of missing values for High income: nonOECD
+CountMissing_HiNOE<-length(which(is.na(tHiNOE$`Rank`)))
+CountMissing_HiNOE
+```
+
+The number of missing rankings for the group "High Income nonOECD" is: `r CountMissing_HiNOE`
+  
 
 4) Plot the GDP for all the countries. 
 ```{r results='hide'}
-##Plot the GDP for all of the countries, color plot by Income Group
+## Plot the GDP for all of the countries, color plot by Income Group
 suppressWarnings(library(ggplot2))
 allPlot <- ggplot(testMerge, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity') +
   coord_flip() +
   theme(axis.text.y = element_text(vjust = 1, size = 4)) +
-  scale_y_continuous(labels = scales::comma) +
-  labs(x = 'Country')
+  scale_y_continuous(labels = scales::comma)
 
 
-#Saving the plot in png format to be displayed in Github
+# Saving the plot in png format to be displayed in Github
 suppressMessages(suppressWarnings(ggsave(filename = "all.png", plot = allPlot)))
 
 ```
@@ -93,7 +100,7 @@ suppressMessages(suppressWarnings(ggsave(filename = "all.png", plot = allPlot)))
 
 ```{r}
 
-#We create different dataframe for each income group
+# We create different dataframes for each income group for individual graphs
 
 HighIncomeNonOECD <- testMerge[which(testMerge$`Income Group` == 'High income: nonOECD'),]
 HighIncomeOECD <- testMerge[which(testMerge$`Income Group` == 'High income: OECD'),]
@@ -190,31 +197,31 @@ suppressMessages(ggsave(filename = "UpperMiddleIncome.png", plot = UpperMiddleIn
 ![*Fig. 6* GDP by UpperMiddleIncome group](UpperMiddleIncome.png)
 
 ```{r}
-##5- cut the gdp ranking into 5 SEPARATE QUANTILE GROUPS
-## Counting the Missing Values in `Rank`
+##5- Cut the GDP ranking into 5 SEPARATE QUANTILE GROUPS
+## Count the Missing Values in `Rank`
 
 
-#counting the number of missing obervations in Rank
+# Count the number of missing obervations in Rank
 CountMissing_Rank<-length(which(is.na(testMerge$`Rank`)))
 CountMissing_Rank
 
-#We get rid of missing values in the ranking Rank: 
+# Remove missing values in the ranking Rank: 
 Ranks_GDP<-testMerge[which(!is.na(testMerge$`Rank`)),]
 
 
 Ranks_GDP <- within(Ranks_GDP
-                   ,quartile <- as.integer(cut(`GDP (millions of US dollars)`, quantile(`GDP (millions of US dollars)`, probs=0:5/5), include.lowest=TRUE)))
+                   ,quantile <- as.integer(cut(`GDP (millions of US dollars)`, quantile(`GDP (millions of US dollars)`, probs=0:5/5), include.lowest=TRUE)))
 
 
 
-#getting the 38 nations with the highest income
-Ranks_GDP_<-subset(Ranks_GDP[,c("Rank","Economy","GDP (millions of US dollars)","Income Group","quartile")],quartile==5 & `Income Group`=="Lower middle income")
+# Get the 38 nations with the highest income
+Ranks_GDP_<-subset(Ranks_GDP[,c("Rank","Economy","GDP (millions of US dollars)","Income Group","quantile")],quantile==5 & `Income Group`=="Lower middle income")
 
-#number of 38 nations with the highest gdp ranking and have "lower middle income is:"
+# Number of 38 nations with the highest GDP ranking and have "lower middle income" is:
 num38LowMid<- length(Ranks_GDP_[,1])
-#The 38 nations with the highets gdp and "lower middle income are"
-Ranks_GDP_[order(Ranks_GDP_$`GDP (millions of US dollars)`, decreasing = TRUE),]
-
+# The 38 nations with the highest GDP and "lower middle income" are:
+Ranks_GDP_ <- Ranks_GDP_[order(Ranks_GDP_$`GDP (millions of US dollars)`, decreasing = TRUE),]
+Ranks_GDP_[,'Economy']
 
 ```
 
