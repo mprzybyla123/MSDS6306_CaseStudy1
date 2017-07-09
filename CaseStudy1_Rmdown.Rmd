@@ -5,12 +5,19 @@ date: "7/9/2017"
 output: html_document
 ---
 
+# Introduction
+
+  The World Bank is an international financial institution that provides financial and technical assistance to developing countries around the world. To this end, they provide a large array of free data sources ranging from agriculture to education that allow people to dive into the world’s development challenges. 
+  
+  One such area that the World Bank data helps us to look into is the relationship between Gross Domestic Product (GDP) and Income Group of countries. To better understand development indicators, the World bank has categorized income groups as: High Income: nonOECD, High Income: OECD, Low Income, Lower Middle Income, and Upper Middle Income. The separation of nonOECD and OECD represents the involvement of a particular country in the Organisation for Economic Co-operation and Development, an intergovernmental organization created to stimulate economic progress.
+  
+  To understand the relationship between GDP and Income Group, we have taken GDP data from the World Bank for the year 2012 and applied the Income Group categories, as described above, to see the correlation, if any, of GDP rankings and income levels of countries.
+
 
 ## R Markdown
 
 The code for downloading, tyding and merging data in a R Markdown file.
 The files are included in a makefile format
-
 
 
 ```{r}
@@ -109,7 +116,7 @@ HighIncomeNoneOECDPlot <- ggplot(HighIncomeNonOECD, aes(x=`CountryCode`, y=`GDP 
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
   scale_y_continuous(labels = scales::comma)
 
-ggsave(filename = "HighIncomeNonOECD.png", plot = HighIncomeNoneOECDPlot) 
+suppressMessages(ggsave(filename = "HighIncomeNonOECD.png", plot = HighIncomeNoneOECDPlot)) 
 ```
 
 ![*Fig. 2* GDP by HighIncomeNonOECD group](HighIncomeNonOECD.png)
@@ -123,7 +130,7 @@ HighIncomeOECDPlot <- ggplot(HighIncomeOECD, aes(x=`CountryCode`, y=`GDP (millio
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
   scale_y_continuous(labels = scales::comma)
 
-ggsave(filename = "HighIncomeOECD.png", plot = HighIncomeOECDPlot)
+suppressMessages(ggsave(filename = "HighIncomeOECD.png", plot = HighIncomeOECDPlot))
 ```
 
 ![*Fig. 3* GDP by HighIncomeOECD group](HighIncomeOECD.png)
@@ -138,7 +145,7 @@ LowIncomePlot <- ggplot(LowIncome, aes(x=`CountryCode`, y=`GDP (millions of US d
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
   scale_y_continuous(labels = scales::comma)
 
-ggsave(filename = "LowIncome.png", plot = LowIncomePlot)
+suppressMessages(ggsave(filename = "LowIncome.png", plot = LowIncomePlot))
 
 ```
 
@@ -154,7 +161,7 @@ LowerMiddleIncomePlot <- ggplot(LowerMiddleIncome, aes(x=`CountryCode`, y=`GDP (
   scale_y_continuous(labels = scales::comma)
 
 
-ggsave(filename = "LowerMiddleIncome.png", plot = LowerMiddleIncomePlot)
+suppressMessages(ggsave(filename = "LowerMiddleIncome.png", plot = LowerMiddleIncomePlot))
 ```
 
 
@@ -170,7 +177,7 @@ UpperMiddleIncomePlot <- ggplot(UpperMiddleIncome, aes(x=`CountryCode`, y=`GDP (
   scale_y_continuous(labels = scales::comma)
 
 
-ggsave(filename = "UpperMiddleIncome.png", plot = UpperMiddleIncomePlot)
+suppressMessages(ggsave(filename = "UpperMiddleIncome.png", plot = UpperMiddleIncomePlot))
 
 ```
 
@@ -211,4 +218,7 @@ lower middle income but among the highest GDP is: `r num38LowMid`
 
 Note: There are `r CountMissing_Rank` countries not ranked.
 
+# Conclusion
+
+  From the data we gathered, we found that the countries within the High Income: OECD category had a higher GDP than the other categories. This may not come as much as a surprise, as you would assume a country with high income to also have high GDP. However, you can see that there are some countries that fall into different income groups that have a high GDP; China, Brazil, and Russia to name a few. What’s going on here? The answer to this question stems from what GDP represents. A country’s GDP is the dollar value of all the goods and services the country produced in a certain time period. So, GDP represents a country’s economy as a means of production, but is not a direct reflection of how the citizens of that country are compensated. The instances of countries with high GDP and low income levels tells us that while the production in the country is high, the income level of its workers is low.
 
