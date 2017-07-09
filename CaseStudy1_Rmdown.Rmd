@@ -114,7 +114,8 @@ HighIncomeNoneOECDPlot <- ggplot(HighIncomeNonOECD, aes(x=`CountryCode`, y=`GDP 
   geom_bar(stat='identity', fill = '#FF6699', color = 'black') +
   coord_flip() +
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = 'High Income Non OECD')
 
 suppressMessages(ggsave(filename = "HighIncomeNonOECD.png", plot = HighIncomeNoneOECDPlot)) 
 ```
@@ -128,7 +129,8 @@ HighIncomeOECDPlot <- ggplot(HighIncomeOECD, aes(x=`CountryCode`, y=`GDP (millio
   geom_bar(stat='identity', fill = '#CCCC00', color = 'black') +
   coord_flip() +
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = 'High Income OECD')
 
 suppressMessages(ggsave(filename = "HighIncomeOECD.png", plot = HighIncomeOECDPlot))
 ```
@@ -143,7 +145,8 @@ LowIncomePlot <- ggplot(LowIncome, aes(x=`CountryCode`, y=`GDP (millions of US d
   geom_bar(stat='identity', fill = '#009966', color = 'black') +
   coord_flip() +
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = 'Low Income')
 
 suppressMessages(ggsave(filename = "LowIncome.png", plot = LowIncomePlot))
 
@@ -158,7 +161,8 @@ LowerMiddleIncomePlot <- ggplot(LowerMiddleIncome, aes(x=`CountryCode`, y=`GDP (
   geom_bar(stat='identity', fill = '#33CCFF', color = 'black') +
   coord_flip() +
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = 'Lower Middle Income')
 
 
 suppressMessages(ggsave(filename = "LowerMiddleIncome.png", plot = LowerMiddleIncomePlot))
@@ -174,7 +178,8 @@ UpperMiddleIncomePlot <- ggplot(UpperMiddleIncome, aes(x=`CountryCode`, y=`GDP (
   geom_bar(stat='identity', fill = '#CC66FF', color = 'black') +
   coord_flip() +
   theme(axis.text.y = element_text(vjust = 1, size = 5)) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = 'Upper Middle Income')
 
 
 suppressMessages(ggsave(filename = "UpperMiddleIncome.png", plot = UpperMiddleIncomePlot))
