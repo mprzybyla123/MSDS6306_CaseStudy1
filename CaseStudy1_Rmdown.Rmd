@@ -69,13 +69,15 @@ HiInNOecd <- round(mean(tHiNOE$`Rank`,na.rm=TRUE),2)
 ```{r results='hide'}
 ##Plot the GDP for all of the countries, color plot by Income Group
 suppressWarnings(library(ggplot2))
-ggplot(testMerge, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+allPlot <- ggplot(testMerge, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity') +
   coord_flip() +
-  theme(axis.text.y = element_text(vjust = 1, size = 4))
+  theme(axis.text.y = element_text(vjust = 1, size = 4)) +
+  scale_y_continuous(labels = scales::comma)
+
 
 #Saving the plot in png format to be displayed in Github
-suppressMessages(suppressWarnings(ggsave("all.png")))
+suppressMessages(suppressWarnings(ggsave(filename = "all.png", plot = allPlot)))
 
 ```
 
@@ -101,12 +103,13 @@ UpperMiddleIncome <- testMerge[which(testMerge$`Income Group` == 'Upper middle i
 4.1) Plot the GDP for countries with HighIncomeNonOECD
 
 ```{r}
-ggplot(HighIncomeNonOECD, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+HighIncomeNoneOECDPlot <- ggplot(HighIncomeNonOECD, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity', fill = '#FF6699', color = 'black') +
   coord_flip() +
-  theme(axis.text.y = element_text(vjust = 1, size = 5))
+  theme(axis.text.y = element_text(vjust = 1, size = 5)) +
+  scale_y_continuous(labels = scales::comma)
 
-ggsave("HighIncomeNonOECD.png")
+ggsave(filename = "HighIncomeNonOECD.png", plot = HighIncomeNoneOECDPlot) 
 ```
 
 ![*Fig. 2* GDP by HighIncomeNonOECD group](HighIncomeNonOECD.png)
@@ -114,12 +117,13 @@ ggsave("HighIncomeNonOECD.png")
 4.2) Plot the GDP for countries with HighIncomeOECD
 
 ```{r}
-ggplot(HighIncomeOECD, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+HighIncomeOECDPlot <- ggplot(HighIncomeOECD, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity', fill = '#CCCC00', color = 'black') +
   coord_flip() +
-  theme(axis.text.y = element_text(vjust = 1, size = 5))
+  theme(axis.text.y = element_text(vjust = 1, size = 5)) +
+  scale_y_continuous(labels = scales::comma)
 
-ggsave("HighIncomeOECD.png")
+ggsave(filename = "HighIncomeOECD.png", plot = HighIncomeOECDPlot)
 ```
 
 ![*Fig. 3* GDP by HighIncomeOECD group](HighIncomeOECD.png)
@@ -128,12 +132,13 @@ ggsave("HighIncomeOECD.png")
 
 ```{r}
 
-ggplot(LowIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+LowIncomePlot <- ggplot(LowIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity', fill = '#009966', color = 'black') +
   coord_flip() +
-  theme(axis.text.y = element_text(vjust = 1, size = 5))
+  theme(axis.text.y = element_text(vjust = 1, size = 5)) +
+  scale_y_continuous(labels = scales::comma)
 
-ggsave("LowIncome.png")
+ggsave(filename = "LowIncome.png", plot = LowIncomePlot)
 
 ```
 
@@ -142,13 +147,14 @@ ggsave("LowIncome.png")
 4.4) Plot the GDP for countries with LowerMiddleIncome
 
 ```{r}
-ggplot(LowerMiddleIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+LowerMiddleIncomePlot <- ggplot(LowerMiddleIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity', fill = '#33CCFF', color = 'black') +
   coord_flip() +
-  theme(axis.text.y = element_text(vjust = 1, size = 5))
+  theme(axis.text.y = element_text(vjust = 1, size = 5)) +
+  scale_y_continuous(labels = scales::comma)
 
 
-ggsave("LowerMiddleIncome.png")
+ggsave(filename = "LowerMiddleIncome.png", plot = LowerMiddleIncomePlot)
 ```
 
 
@@ -157,13 +163,14 @@ ggsave("LowerMiddleIncome.png")
 
 4.5) Plot the GDP for countries with UpperMiddleIncome
 ```{r}
-ggplot(UpperMiddleIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
+UpperMiddleIncomePlot <- ggplot(UpperMiddleIncome, aes(x=`CountryCode`, y=`GDP (millions of US dollars)`, fill=`Income Group`)) +
   geom_bar(stat='identity', fill = '#CC66FF', color = 'black') +
   coord_flip() +
-  theme(axis.text.y = element_text(vjust = 1, size = 5))
+  theme(axis.text.y = element_text(vjust = 1, size = 5)) +
+  scale_y_continuous(labels = scales::comma)
 
 
-ggsave("UpperMiddleIncome.png")
+ggsave(filename = "UpperMiddleIncome.png", plot = UpperMiddleIncomePlot)
 
 ```
 
